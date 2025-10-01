@@ -1,169 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EduTrack - Smart Attendance System</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        body { font-family: 'Inter', sans-serif; }
-        .hero-bg { background: linear-gradient(135deg, #1a365d 0%, #2d3748 100%); }
-        .text-gradient { background: linear-gradient(135deg, #f6ad55, #63b3ed); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .card-hover { transition: all 0.3s ease; }
-        .card-hover:hover { transform: translateY(-8px); box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
-        .particle-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; }
-        .content-overlay { position: relative; z-index: 1; }
-    </style>
-</head>
-<body class="bg-gray-50">
-    <!-- Navigation -->
-    <nav class="bg-white shadow-lg fixed w-full top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16">
-                <div class="flex items-center">
-                    <div class="flex-shrink-0">
-                        <h1 class="text-2xl font-bold text-gradient">EduTrack</h1>
-                    </div>
-                </div>
-                <div class="flex items-center space-x-8">
-                    <a href="index.html" class="text-gray-900 font-medium hover:text-orange-500 transition-colors">Home</a>
-                    <a href="login.html" class="text-gray-700 hover:text-orange-500 transition-colors">Teacher Login</a>
-                    <a href="materials.html" class="text-gray-700 hover:text-orange-500 transition-colors">Materials</a>
-                    <a href="attendance.html" class="bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600 transition-colors">Check In</a>
-                </div>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Hero Section -->
-    <section class="hero-bg min-h-screen flex items-center relative overflow-hidden">
-        <div id="particles" class="particle-bg"></div>
-        <div class="content-overlay w-full">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16">
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                    <div class="text-white">
-                        <h1 class="text-5xl lg:text-6xl font-bold mb-6 leading-tight">
-                            Smart <span class="text-gradient">Attendance</span> for Modern Classrooms
-                        </h1>
-                        <p class="text-xl text-gray-300 mb-8 leading-relaxed">
-                            Streamline your classroom attendance with QR code technology. 
-                            Real-time tracking, session control, and seamless material sharing 
-                            in one powerful platform.
-                        </p>
-                        <div class="flex flex-col sm:flex-row gap-4">
-                            <a href="login.html" class="bg-orange-500 text-white px-8 py-4 rounded-lg font-semibold hover:bg-orange-600 transition-colors text-center">
-                                Teacher Dashboard
-                            </a>
-                            <a href="attendance.html" class="border-2 border-white text-white px-8 py-4 rounded-lg font-semibold hover:bg-white hover:text-gray-900 transition-colors text-center">
-                                Student Check-In
-                            </a>
-                        </div>
-                    </div>
-                    <div class="relative">
-                        <img src="resources/hero-education.jpg" alt="Modern Classroom Technology" 
-                             class="rounded-2xl shadow-2xl w-full h-auto">
-                        <div class="absolute -top-4 -right-4 bg-orange-500 text-white p-4 rounded-xl shadow-lg">
-                            <div class="text-2xl font-bold">98%</div>
-                            <div class="text-sm">Accuracy Rate</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Features Section -->
-    <section class="py-20 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl font-bold text-gray-900 mb-4">Why Choose EduTrack?</h2>
-                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
-                    Experience the future of classroom management with our innovative attendance system
-                </p>
-            </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="card-hover bg-white p-8 rounded-2xl shadow-lg border border-gray-100">
-                    <div class="w-16 h-16 bg-orange-100 rounded-xl flex items-center justify-center mb-6">
-                        <svg class="w-8 h-8 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"></path>
-                        </svg>
-                    </div>
-                    <h3 class="text-2xl font-bold text-gray-900 mb-4">QR Code Attendance</h3>
-                    <p class="text-gray-600 leading-relaxed">
-                        Generate unique QR codes for each session. Students simply scan to check in - 
-                        no more manual roll calls or paper lists.
-                    </p>
-                </div>
-
-                <div class="card-hover bg-white p-8 rounded-2xl shadow-lg border border-gray-100">
-                    <div class="w-16 h-16 bg-blue-100 rounded-xl flex items-center justify-center mb-6">
-                        <svg class="w-8 h-8 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
-                        </svg>
-                    </div>
-                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Real-time Tracking</h3>
-                    <p class="text-gray-600 leading-relaxed">
-                        Monitor attendance live as students check in. Get instant insights 
-                        into participation and engagement patterns.
-                    </p>
-                </div>
-
-                <div class="card-hover bg-white p-8 rounded-2xl shadow-lg border border-gray-100">
-                    <div class="w-16 h-16 bg-green-100 rounded-xl flex items-center justify-center mb-6">
-                        <svg class="w-8 h-8 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
-                        </svg>
-                    </div>
-                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Session Control</h3>
-                    <p class="text-gray-600 leading-relaxed">
-                        Teachers have full control over attendance sessions. Start when ready, 
-                        pause if needed, and close when complete.
-                    </p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- How It Works Section -->
-    <section class="py-20 bg-gray-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl font-bold text-gray-900 mb-4">How It Works</h2>
-                <p class="text-xl text-gray-600">Simple steps to revolutionize your classroom attendance</p>
-            </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                <div class="text-center">
-                    <div class="w-20 h-20 bg-orange-500 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">1</div>
-                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Teacher Login</h3>
-                    <p class="text-gray-600">Access your dashboard and create a new attendance session</p>
-                </div>
-                
-                <div class="text-center">
-                    <div class="w-20 h-20 bg-blue-500 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">2</div>
-                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Generate QR</h3>
-                    <p class="text-gray-600">Create a unique QR code for your specific class session</p>
-                </div>
-                
-                <div class="text-center">
-                    <div class="w-20 h-20 bg-green-500 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">3</div>
-                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Students Scan</h3>
-                    <p class="text-gray-600">Students scan the QR code to access the attendance form</p>
-                </div>
-                
-                <div class="text-center">
-                    <div class="w-20 h-20 bg-purple-500 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">4</div>
-                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Track Live</h3>
-                    <p class="text-gray-600">Monitor attendance in real-time from your dashboard</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <!-- Footer -->
     <footer class="bg-gray-900 text-white py-12">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -177,6 +11,7 @@
         </div>
     </footer>
 
+    <!-- Particle + Scroll Animation Scripts -->
     <script>
         // Particle background animation
         let particles = [];
@@ -185,7 +20,6 @@
             let canvas = createCanvas(windowWidth, windowHeight);
             canvas.parent('particles');
             
-            // Create particles
             for (let i = 0; i < 50; i++) {
                 particles.push({
                     x: random(width),
@@ -200,19 +34,15 @@
         
         function draw() {
             clear();
-            
-            // Update and draw particles
             for (let particle of particles) {
                 particle.x += particle.speedX;
                 particle.y += particle.speedY;
                 
-                // Wrap around edges
                 if (particle.x < 0) particle.x = width;
                 if (particle.x > width) particle.x = 0;
                 if (particle.y < 0) particle.y = height;
                 if (particle.y > height) particle.y = 0;
                 
-                // Draw particle
                 fill(255, 255, 255, particle.opacity * 255);
                 noStroke();
                 ellipse(particle.x, particle.y, particle.size);
@@ -224,10 +54,7 @@
         }
 
         // Animate elements on scroll
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
+        const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
 
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
@@ -243,7 +70,6 @@
             });
         }, observerOptions);
 
-        // Observe all cards
         document.addEventListener('DOMContentLoaded', () => {
             document.querySelectorAll('.card-hover').forEach(card => {
                 card.style.opacity = '0';
@@ -251,5 +77,8 @@
             });
         });
     </script>
+
+    <!-- ✅ Load Firebase app code -->
+    <script type="module" src="main.js"></script>
 </body>
 </html>
