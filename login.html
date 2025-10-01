@@ -64,7 +64,7 @@
                                placeholder="••••••••" required>
                     </div>
                     
-                    <button type="button" onclick="loginTeacher()" 
+                    <button type="button" id="signInButton" 
                             class="w-full bg-orange-500 text-white py-3 rounded-lg font-semibold hover:bg-orange-600 transition-colors">
                         Sign In
                     </button>
@@ -108,7 +108,7 @@
                                placeholder="Springfield High School" required>
                     </div>
                     
-                    <button type="button" onclick="registerTeacher()" 
+                    <button type="button" id="registerButton"
                             class="w-full bg-blue-500 text-white py-3 rounded-lg font-semibold hover:bg-blue-600 transition-colors">
                         Create Account
                     </button>
@@ -133,12 +133,20 @@
         </div>
     </div>
 
-    <script>
-        // Form switching animation
+    <!-- IMPORTANT: Change this to type="module" -->
+    <script type="module">
+        // 🚀 Import your AuthManager from main.js
+        import { AuthManager } from './main.js'; // Adjust the path if main.js is in a different directory
+
+        // Your existing UI functions
         function toggleForm() {
             const loginForm = document.getElementById('loginForm');
             const registerForm = document.getElementById('registerForm');
             
+            // Clear messages when toggling forms
+            hideError();
+            hideSuccess();
+
             if (loginForm.classList.contains('hidden')) {
                 // Show login form
                 anime({
@@ -182,70 +190,17 @@
             }
         }
 
-        // Login function
-        function loginTeacher() {
-            const email = document.getElementById('loginEmail').value;
-            const password = document.getElementById('loginPassword').value;
-            
-            if (!email || !password) {
-                showError('Please fill in all fields');
-                return;
-            }
-
-            // Simulate login (replace with Firebase auth)
-            showSuccess('Login successful! Redirecting to dashboard...');
-            
-            // Animate button
-            const button = event.target;
-            button.innerHTML = 'Signing In...';
-            button.disabled = true;
-            
-            setTimeout(() => {
-                window.location.href = 'dashboard.html';
-            }, 2000);
-        }
-
-        // Register function
-        function registerTeacher() {
-            const name = document.getElementById('registerName').value;
-            const email = document.getElementById('registerEmail').value;
-            const password = document.getElementById('registerPassword').value;
-            const school = document.getElementById('registerSchool').value;
-            
-            if (!name || !email || !password || !school) {
-                showError('Please fill in all fields');
-                return;
-            }
-
-            if (password.length < 6) {
-                showError('Password must be at least 6 characters');
-                return;
-            }
-
-            // Simulate registration (replace with Firebase auth)
-            showSuccess('Account created successfully! You can now sign in.');
-            
-            // Clear form
-            document.getElementById('registerName').value = '';
-            document.getElementById('registerEmail').value = '';
-            document.getElementById('registerPassword').value = '';
-            document.getElementById('registerSchool').value = '';
-            
-            // Switch to login form
-            setTimeout(() => {
-                toggleForm();
-            }, 2000);
-        }
-
+        // Helper functions for messages
         function showError(message) {
             const errorDiv = document.getElementById('errorMessage');
             const errorText = document.getElementById('errorText');
             errorText.textContent = message;
             errorDiv.classList.remove('hidden');
-            
-            setTimeout(() => {
-                errorDiv.classList.add('hidden');
-            }, 5000);
+        }
+
+        function hideError() {
+            document.getElementById('errorMessage').classList.add('hidden');
+            document.getElementById('errorText').textContent = '';
         }
 
         function showSuccess(message) {
@@ -253,11 +208,124 @@
             const successText = document.getElementById('successText');
             successText.textContent = message;
             successDiv.classList.remove('hidden');
-            
-            setTimeout(() => {
-                successDiv.classList.add('hidden');
-            }, 5000);
         }
+
+        function hideSuccess() {
+            document.getElementById('successMessage').classList.add('hidden');
+            document.getElementById('successText').textContent = '';
+        }
+
+        // 🎯 NEW: Firebase Login Function
+        document.getElementById('signInButton').addEventListener('click', async () => {
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            const button = document.getElementById('signInButton');
+
+            hideError();
+            hideSuccess();
+
+            if (!email || !password) {
+                showError('Please enter both email and password.');
+                return;
+            }
+
+            button.textContent = 'Signing In...';
+            button.disabled = true;
+
+            try {
+                const user = await AuthManager.login(email, password);
+                showSuccess(`Welcome back, ${user.displayName || user.email}! Redirecting...`);
+                // Redirect on successful login
+                window.location.href = 'dashboard.html'; // Or wherever your teacher dashboard is
+            } catch (error) {
+                console.error("Login failed:", error);
+                let errorMessage = 'An unexpected error occurred. Please try again.';
+                switch (error.code) {
+                    case 'auth/invalid-email':
+                        errorMessage = 'Invalid email address format.';
+                        break;
+                    case 'auth/user-disabled':
+                        errorMessage = 'Your account has been disabled.';
+                        break;
+                    case 'auth/user-not-found':
+                        errorMessage = 'No user found with this email.';
+                        break;
+                    case 'auth/wrong-password':
+                        errorMessage = 'Incorrect password. Please try again.';
+                        break;
+                    case 'auth/invalid-credential': // Modern Firebase Auth error for general login failures
+                        errorMessage = 'Invalid login credentials.';
+                        break;
+                    default:
+                        errorMessage = `Login error: ${error.message}`;
+                }
+                showError(errorMessage);
+            } finally {
+                button.textContent = 'Sign In';
+                button.disabled = false;
+            }
+        });
+
+
+        // 🎯 NEW: Firebase Register Function
+        document.getElementById('registerButton').addEventListener('click', async () => {
+            const name = document.getElementById('registerName').value;
+            const email = document.getElementById('registerEmail').value;
+            const password = document.getElementById('registerPassword').value;
+            const school = document.getElementById('registerSchool').value;
+            const button = document.getElementById('registerButton');
+
+            hideError();
+            hideSuccess();
+
+            if (!name || !email || !password || !school) {
+                showError('Please fill in all fields.');
+                return;
+            }
+
+            if (password.length < 6) {
+                showError('Password should be at least 6 characters.');
+                return;
+            }
+
+            button.textContent = 'Creating Account...';
+            button.disabled = true;
+
+            try {
+                await AuthManager.register(email, password, name, school);
+                showSuccess('Account created successfully! You can now sign in.');
+                // Clear form fields
+                document.getElementById('registerName').value = '';
+                document.getElementById('registerEmail').value = '';
+                document.getElementById('registerPassword').value = '';
+                document.getElementById('registerSchool').value = '';
+                
+                // Switch to login form after successful registration
+                setTimeout(() => {
+                    toggleForm();
+                }, 2000); // Give user a moment to read success message
+            } catch (error) {
+                console.error("Registration failed:", error);
+                let errorMessage = 'An unexpected error occurred during registration.';
+                switch (error.code) {
+                    case 'auth/email-already-in-use':
+                        errorMessage = 'This email address is already in use.';
+                        break;
+                    case 'auth/invalid-email':
+                        errorMessage = 'Please enter a valid email address.';
+                        break;
+                    case 'auth/weak-password':
+                        errorMessage = 'Password is too weak. Please choose a stronger password.';
+                        break;
+                    default:
+                        errorMessage = `Registration error: ${error.message}`;
+                }
+                showError(errorMessage);
+            } finally {
+                button.textContent = 'Create Account';
+                button.disabled = false;
+            }
+        });
 
         // Animate form on load
         document.addEventListener('DOMContentLoaded', () => {
@@ -269,6 +337,12 @@
                 easing: 'easeOutQuad'
             });
         });
+
+        // Ensure the global functions are attached for the inline onclick handlers
+        window.toggleForm = toggleForm;
+        // The new login/register functions are attached via event listeners, not onclick,
+        // so `window.loginTeacher` and `window.registerTeacher` are no longer needed
+        // and have been removed to avoid confusion with the new event listeners.
     </script>
 </body>
 </html>
